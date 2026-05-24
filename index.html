@@ -11,19 +11,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #080808;
-      --surface:  #111111;
-      --border:   #222222;
-      --text:     #c8c8c0;
-      --muted:    #505048;
-      --accent:   #e8e0c0;
-      --red:      #c03020;
-      --scan-opacity: 0.03;
+      --bg:      #040608;
+      --surface: #080c10;
+      --border:  #1a2230;
+      --text:    #8ab0c8;
+      --muted:   #2a4050;
+      --accent:  #00aaff;
+      --accent2: #00ffcc;
+      --dim:     #4a7090;
     }
 
-    html, body {
-      height: 100%;
-    }
+    html, body { height: 100%; }
 
     body {
       background: var(--bg);
@@ -34,53 +32,66 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1rem 2rem;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* scanlines overlay */
-    body::before {
-      content: '';
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.85;
+    }
+
+    .scanlines {
       position: fixed;
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
         transparent,
-        transparent 2px,
-        rgba(0,0,0,var(--scan-opacity)) 2px,
-        rgba(0,0,0,var(--scan-opacity)) 4px
+        transparent 3px,
+        rgba(0,0,0,0.18) 3px,
+        rgba(0,0,0,0.18) 4px
       );
       pointer-events: none;
-      z-index: 100;
+      z-index: 2;
     }
 
-    /* noise grain */
-    body::after {
-      content: '';
+    .vignette {
       position: fixed;
-      inset: -200%;
-      width: 400%;
-      height: 400%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
       pointer-events: none;
-      z-index: 99;
-      opacity: 0.4;
-      animation: grain 0.5s steps(1) infinite;
+      z-index: 3;
     }
 
-    @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-2%,-3%); }
-      20%  { transform: translate(3%, 1%); }
-      30%  { transform: translate(-1%, 4%); }
-      40%  { transform: translate(4%,-1%); }
-      50%  { transform: translate(-3%, 2%); }
-      60%  { transform: translate(2%, 3%); }
-      70%  { transform: translate(-4%, 0%); }
-      80%  { transform: translate(1%,-4%); }
-      90%  { transform: translate(3%, 3%); }
-      100% { transform: translate(-2%,-1%); }
+    .glitch-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      overflow: hidden;
+    }
+    .glitch-bar {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0;
+      animation: sweep 6s infinite;
+    }
+    .glitch-bar:nth-child(1) { animation-delay: 0s;   animation-duration: 5s; }
+    .glitch-bar:nth-child(2) { animation-delay: 1.8s; animation-duration: 7s; background: var(--accent2); }
+    .glitch-bar:nth-child(3) { animation-delay: 3.5s; animation-duration: 4s; }
+
+    @keyframes sweep {
+      0%   { top: -2px; opacity: 0; }
+      2%   { opacity: 0.4; }
+      98%  { opacity: 0.15; }
+      100% { top: 100%; opacity: 0; }
     }
 
     .container {
@@ -89,118 +100,119 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0;
       position: relative;
-      z-index: 1;
+      z-index: 10;
+      animation: fadein 1.4s ease both;
     }
 
-    /* ── LOGO ── */
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .logo-wrap {
-      margin-bottom: 2.5rem;
+      margin-bottom: 2.8rem;
+      margin-top: 1.5rem;
       text-align: center;
       position: relative;
     }
 
     .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(7rem, 22vw, 11rem);
+      font-size: clamp(7rem, 22vw, 10rem);
       line-height: 0.85;
       letter-spacing: -0.02em;
-      color: var(--accent);
+      color: #ffffff;
       position: relative;
       display: inline-block;
       user-select: none;
+      text-shadow: 0 0 40px rgba(0,170,255,0.3);
     }
 
-    /* glitch layers */
     .logo::before,
     .logo::after {
       content: 'U';
       position: absolute;
       inset: 0;
-      color: var(--accent);
     }
     .logo::before {
-      animation: glitch-r 4s infinite steps(1);
-      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
-      color: var(--red);
+      animation: glitch-r 3.5s infinite steps(1);
+      clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
+      color: #ff2244;
       opacity: 0;
     }
     .logo::after {
-      animation: glitch-b 4s infinite steps(1) 0.1s;
-      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
-      color: #2060b0;
+      animation: glitch-b 3.5s infinite steps(1) 0.08s;
+      clip-path: polygon(0 55%, 100% 55%, 100% 72%, 0 72%);
+      color: var(--accent);
       opacity: 0;
       mix-blend-mode: screen;
     }
 
     @keyframes glitch-r {
-      0%,89%,100% { opacity: 0; transform: none; }
-      90%  { opacity: 1; transform: translateX(-3px); }
-      92%  { opacity: 1; transform: translateX(2px); }
-      94%  { opacity: 0; }
-      96%  { opacity: 1; transform: translateX(-1px); }
-      98%  { opacity: 0; }
+      0%,84%,100% { opacity:0; transform:none; }
+      85% { opacity:1; transform:translateX(-4px) skewX(-2deg); }
+      87% { opacity:1; transform:translateX(3px); }
+      89% { opacity:0; }
+      92% { opacity:1; transform:translateX(-2px); }
+      94% { opacity:0; }
     }
     @keyframes glitch-b {
-      0%,89%,100% { opacity: 0; transform: none; }
-      90%  { opacity: 1; transform: translateX(3px); }
-      92%  { opacity: 1; transform: translateX(-2px); }
-      94%  { opacity: 0; }
-      96%  { opacity: 1; transform: translateX(1px); }
-      98%  { opacity: 0; }
+      0%,84%,100% { opacity:0; transform:none; }
+      85% { opacity:1; transform:translateX(4px) skewX(1deg); }
+      87% { opacity:1; transform:translateX(-3px); }
+      89% { opacity:0; }
+      92% { opacity:1; transform:translateX(2px); }
+      94% { opacity:0; }
     }
 
     .tagline {
       font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
     }
 
-    /* ── DIVIDER ── */
     .divider {
       width: 100%;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 2rem;
+      margin-bottom: 1.6rem;
     }
-    .divider::before,
-    .divider::after {
+    .divider::before, .divider::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--border);
     }
     .divider span {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 0.3em;
       color: var(--muted);
     }
 
-    /* ── LINKS ── */
     .links {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .link-item {
       display: flex;
       align-items: center;
-      gap: 0;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background: rgba(8,12,16,0.7);
       text-decoration: none;
       color: var(--text);
       position: relative;
       overflow: hidden;
-      transition: border-color 0.15s, color 0.15s;
-      cursor: pointer;
+      transition: border-color 0.12s;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
     .link-item::before {
@@ -209,34 +221,30 @@
       inset: 0;
       background: var(--accent);
       transform: translateX(-100%);
-      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+      transition: transform 0.18s cubic-bezier(0.4,0,0.2,1);
       z-index: 0;
     }
 
-    .link-item:hover::before { transform: translateX(0); }
-    .link-item:hover { color: var(--bg); border-color: var(--accent); }
-    .link-item:hover .link-label { color: var(--bg); }
-    .link-item:hover .link-cmd  { color: var(--bg); opacity: 0.5; }
+    .link-item:hover::before  { transform: translateX(0); }
+    .link-item:hover          { border-color: var(--accent); }
+    .link-item:hover .link-label { color: #000; }
+    .link-item:hover .link-cmd   { color: rgba(0,0,0,0.5); }
+    .link-item:hover .link-gutter { color: #000; border-right-color: rgba(0,0,0,0.15); }
+    .link-item:hover .link-arrow  { color: #000; }
 
     .link-gutter {
       width: 40px;
       min-width: 40px;
-      height: 48px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-right: 1px solid var(--border);
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--muted);
-      font-family: 'Share Tech Mono', monospace;
       position: relative;
       z-index: 1;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .link-item:hover .link-gutter {
-      color: var(--bg);
-      border-right-color: rgba(0,0,0,0.15);
+      transition: color 0.12s, border-color 0.12s;
     }
 
     .link-body {
@@ -250,20 +258,18 @@
     }
 
     .link-cmd {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       color: var(--muted);
       letter-spacing: 0.15em;
-      font-family: 'Share Tech Mono', monospace;
-      transition: color 0.15s;
+      transition: color 0.12s;
     }
 
     .link-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
+      font-size: 0.8rem;
       color: var(--accent);
-      transition: color 0.15s;
+      letter-spacing: 0.04em;
+      transition: color 0.12s;
     }
 
     .link-arrow {
@@ -272,30 +278,10 @@
       color: var(--muted);
       position: relative;
       z-index: 1;
-      transition: color 0.15s;
+      transition: color 0.12s;
     }
-    .link-item:hover .link-arrow { color: var(--bg); }
-
-    /* ── FOOTER ── */
-    .footer {
-      margin-top: 3rem;
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-align: center;
-      line-height: 2;
-    }
-
-    /* entrance animation */
-    .container { animation: fadein 1.2s ease both; }
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .link-item {
-      animation: slidein 0.6s ease both;
-    }
+    
+    .link-item { animation: slidein 0.5s ease both; }
     .link-item:nth-child(1) { animation-delay: 0.3s; }
     .link-item:nth-child(2) { animation-delay: 0.4s; }
     .link-item:nth-child(3) { animation-delay: 0.5s; }
@@ -304,18 +290,36 @@
     .link-item:nth-child(6) { animation-delay: 0.8s; }
 
     @keyframes slidein {
-      from { opacity: 0; transform: translateX(-12px); }
-      to   { opacity: 1; transform: translateX(0); }
+      from { opacity:0; transform:translateX(-10px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-align: center;
+      line-height: 2.2;
     }
   </style>
 </head>
 <body>
 
+  <canvas id="bg-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="glitch-overlay">
+    <div class="glitch-bar"></div>
+    <div class="glitch-bar"></div>
+    <div class="glitch-bar"></div>
+  </div>
+
   <div class="container">
 
     <div class="logo-wrap">
       <div class="logo">U</div>
-      <p class="tagline">dark electronic &nbsp;/&nbsp; industrial</p>
+      <p class="tagline">dark electronic &nbsp;/&nbsp; industrial metal</p>
     </div>
 
     <div class="divider"><span>// links</span></div>
@@ -331,29 +335,29 @@
         <span class="link-arrow">→</span>
       </a>
 
-      <a class="link-item" href="https://bandcamp.com" target="_blank" rel="noopener">
+      <a class="link-item" href="https://music.apple.com/gb/artist/u/1566371089" target="_blank" rel="noopener">
         <span class="link-gutter">02</span>
         <span class="link-body">
-          <span class="link-cmd">buy / download —</span>
-          <span class="link-label">Bandcamp</span>
+          <span class="link-cmd">stream —</span>
+          <span class="link-label">Apple Music</span>
+        </span>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a class="link-item" href="https://music.youtube.com/@grande_musica_industriale" target="_blank" rel="noopener">
+        <span class="link-gutter">03</span>
+        <span class="link-body">
+          <span class="link-cmd">stream —</span>
+          <span class="link-label">YouTube Music</span>
         </span>
         <span class="link-arrow">→</span>
       </a>
 
       <a class="link-item" href="https://soundcloud.com/ulysses_primost" target="_blank" rel="noopener">
-        <span class="link-gutter">03</span>
+        <span class="link-gutter">04</span>
         <span class="link-body">
           <span class="link-cmd">listen —</span>
           <span class="link-label">SoundCloud</span>
-        </span>
-        <span class="link-arrow">→</span>
-      </a>
-
-      <a class="link-item" href="https://www.youtube.com/channel/UC3O7kiFZ67ff95JZmIcPOaA" target="_blank" rel="noopener">
-        <span class="link-gutter">04</span>
-        <span class="link-body">
-          <span class="link-cmd">watch —</span>
-          <span class="link-label">YouTube</span>
         </span>
         <span class="link-arrow">→</span>
       </a>
@@ -367,7 +371,7 @@
         <span class="link-arrow">→</span>
       </a>
 
-      <a class="link-item" href="mailto:u@umusic.space">
+      <a class="link-item" href="mailto:ulysse616@gmail.com">
         <span class="link-gutter">06</span>
         <span class="link-body">
           <span class="link-cmd">contact —</span>
@@ -384,6 +388,131 @@
     </p>
 
   </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let W, H, cols, rows, grid, nextGrid;
+    const CELL = 6;
+    const COLS_ACCENT = ['#00aaff', '#00ffcc', '#0066aa'];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      cols = Math.ceil(W / CELL) + 2;
+      rows = Math.ceil(H / CELL) + 2;
+      grid = new Uint8Array(cols * rows);
+      nextGrid = new Uint8Array(cols * rows);
+      for (let i = 0; i < grid.length; i++) {
+        grid[i] = Math.random() < 0.28 ? 1 : 0;
+      }
+    }
+
+    function idx(x, y) { return y * cols + x; }
+
+    function step() {
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          let n = 0;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = (x + dx + cols) % cols;
+              const ny = (y + dy + rows) % rows;
+              n += grid[idx(nx, ny)];
+            }
+          }
+          const alive = grid[idx(x, y)];
+          nextGrid[idx(x, y)] = (alive && (n === 2 || n === 3)) || (!alive && n === 3) ? 1 : 0;
+        }
+      }
+      if (Math.random() < 0.04) {
+        const cx = Math.floor(Math.random() * cols);
+        const cy = Math.floor(Math.random() * rows);
+        for (let dy = -3; dy <= 3; dy++) {
+          for (let dx = -3; dx <= 3; dx++) {
+            const nx = (cx + dx + cols) % cols;
+            const ny = (cy + dy + rows) % rows;
+            nextGrid[idx(nx, ny)] = Math.random() < 0.5 ? 1 : 0;
+          }
+        }
+      }
+      const tmp = grid; grid = nextGrid; nextGrid = tmp;
+    }
+
+    let glitchTimer = 0;
+    let glitchActive = false;
+    let glitchX = 0, glitchY = 0, glitchH = 0, glitchShift = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (!grid[idx(x, y)]) continue;
+          const px = x * CELL;
+          const py = y * CELL;
+          const r = Math.random();
+          if (r < 0.05) {
+            ctx.fillStyle = '#00ffcc22';
+          } else if (r < 0.15) {
+            ctx.fillStyle = '#00aaff18';
+          } else {
+            ctx.fillStyle = '#00aaff0a';
+          }
+          ctx.fillRect(px, py, CELL - 1, CELL - 1);
+        }
+      }
+
+      glitchTimer--;
+      if (glitchTimer <= 0) {
+        glitchTimer = 30 + Math.floor(Math.random() * 120);
+        glitchActive = Math.random() < 0.55;
+        glitchY = Math.floor(Math.random() * H);
+        glitchH = 2 + Math.floor(Math.random() * 18);
+        glitchShift = (Math.random() < 0.5 ? -1 : 1) * (4 + Math.floor(Math.random() * 40));
+      }
+
+      if (glitchActive) {
+        const slice = ctx.getImageData(0, glitchY, W, glitchH);
+        ctx.putImageData(slice, glitchShift, glitchY);
+        ctx.fillStyle = 'rgba(0,170,255,0.06)';
+        ctx.fillRect(0, glitchY, W, glitchH);
+      }
+
+      for (let i = 0; i < 6; i++) {
+        ctx.fillStyle = Math.random() < 0.5 ? 'rgba(0,170,255,0.6)' : 'rgba(0,255,204,0.5)';
+        ctx.fillRect(
+          Math.floor(Math.random() * W),
+          Math.floor(Math.random() * H),
+          1, 1
+        );
+      }
+
+      if (Math.random() < 0.04) {
+        const lx = Math.floor(Math.random() * W);
+        ctx.strokeStyle = 'rgba(0,170,255,0.12)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(lx, 0);
+        ctx.lineTo(lx, H);
+        ctx.stroke();
+      }
+    }
+
+    let frame = 0;
+    function loop() {
+      frame++;
+      if (frame % 3 === 0) step();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    loop();
+  </script>
 
 </body>
 </html>
