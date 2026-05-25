@@ -1,0 +1,7 @@
+# JetBrains Rider / IntelliJ
+.idea/
+*.iml
+
+# macOS garbage
+.DS_Store
+._*
