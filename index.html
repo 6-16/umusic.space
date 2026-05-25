@@ -8,522 +8,108 @@
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B81TYSZJY7"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B81TYSZJY7');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-B81TYSZJY7');
   </script>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
-  
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:      #040608;
-      --surface: #080c10;
-      --border:  #1a2230;
-      --text:    #8ab0c8;
-      --muted:   #2a4050;
-      --accent:  #00aaff;
-      --accent2: #00ffcc;
-      --dim:     #4a7090;
-    }
-
-    html, body { height: 100%; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem 1rem 2rem;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.85;
-    }
-
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.18) 3px,
-        rgba(0,0,0,0.18) 4px
-      );
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .glitch-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 4;
-      overflow: hidden;
-    }
-    .glitch-bar {
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: var(--accent);
-      opacity: 0;
-      animation: sweep 6s infinite;
-    }
-    .glitch-bar:nth-child(1) { animation-delay: 0s;   animation-duration: 5s; }
-    .glitch-bar:nth-child(2) { animation-delay: 1.8s; animation-duration: 7s; background: var(--accent2); }
-    .glitch-bar:nth-child(3) { animation-delay: 3.5s; animation-duration: 4s; }
-
-    @keyframes sweep {
-      0%   { top: -2px; opacity: 0; }
-      2%   { opacity: 0.4; }
-      98%  { opacity: 0.15; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    .container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 10;
-      animation: fadein 1.4s ease both;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .logo-wrap {
-      margin-bottom: 2.8rem;
-      margin-top: 1.5rem;
-      text-align: center;
-      position: relative;
-    }
-
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(7rem, 22vw, 10rem);
-      line-height: 0.85;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      position: relative;
-      display: inline-block;
-      user-select: none;
-      text-shadow: 0 0 40px rgba(0,170,255,0.3);
-    }
-
-    .logo::before,
-    .logo::after {
-      content: 'U';
-      position: absolute;
-      inset: 0;
-    }
-    .logo::before {
-      animation: glitch-r 3.5s infinite steps(1);
-      clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
-      color: #ff2244;
-      opacity: 0;
-    }
-    .logo::after {
-      animation: glitch-b 3.5s infinite steps(1) 0.08s;
-      clip-path: polygon(0 55%, 100% 55%, 100% 72%, 0 72%);
-      color: var(--accent);
-      opacity: 0;
-      mix-blend-mode: screen;
-    }
-
-    @keyframes glitch-r {
-      0%,84%,100% { opacity:0; transform:none; }
-      85% { opacity:1; transform:translateX(-4px) skewX(-2deg); }
-      87% { opacity:1; transform:translateX(3px); }
-      89% { opacity:0; }
-      92% { opacity:1; transform:translateX(-2px); }
-      94% { opacity:0; }
-    }
-    @keyframes glitch-b {
-      0%,84%,100% { opacity:0; transform:none; }
-      85% { opacity:1; transform:translateX(4px) skewX(1deg); }
-      87% { opacity:1; transform:translateX(-3px); }
-      89% { opacity:0; }
-      92% { opacity:1; transform:translateX(2px); }
-      94% { opacity:0; }
-    }
-
-    .tagline {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-top: 0.6rem;
-    }
-
-    .divider {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 1.6rem;
-    }
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-    .divider span {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      color: var(--muted);
-    }
-
-    .links {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .link-item {
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--border);
-      background: rgba(8,12,16,0.7);
-      text-decoration: none;
-      color: var(--text);
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.12s;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-    }
-
-    .link-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--accent);
-      transform: translateX(-100%);
-      transition: transform 0.18s cubic-bezier(0.4,0,0.2,1);
-      z-index: 0;
-    }
-
-    .link-item:hover::before  { transform: translateX(0); }
-    .link-item:hover          { border-color: var(--accent); }
-    .link-item:hover .link-label { color: #000; }
-    .link-item:hover .link-cmd   { color: rgba(0,0,0,0.5); }
-    .link-item:hover .link-gutter { color: #000; border-right-color: rgba(0,0,0,0.15); }
-    .link-item:hover .link-arrow  { color: #000; }
-
-    .link-gutter {
-      width: 40px;
-      min-width: 40px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid var(--border);
-      font-size: 0.6rem;
-      color: var(--muted);
-      position: relative;
-      z-index: 1;
-      transition: color 0.12s, border-color 0.12s;
-    }
-
-    .link-body {
-      flex: 1;
-      padding: 0 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .link-cmd {
-      font-size: 0.58rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      transition: color 0.12s;
-    }
-
-    .link-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      transition: color 0.12s;
-    }
-
-    .link-arrow {
-      padding: 0 16px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      position: relative;
-      z-index: 1;
-      transition: color 0.12s;
-    }
-    
-    .link-item { animation: slidein 0.5s ease both; }
-    .link-item:nth-child(1) { animation-delay: 0.3s; }
-    .link-item:nth-child(2) { animation-delay: 0.4s; }
-    .link-item:nth-child(3) { animation-delay: 0.5s; }
-    .link-item:nth-child(4) { animation-delay: 0.6s; }
-    .link-item:nth-child(5) { animation-delay: 0.7s; }
-    .link-item:nth-child(6) { animation-delay: 0.8s; }
-
-    @keyframes slidein {
-      from { opacity:0; transform:translateX(-10px); }
-      to   { opacity:1; transform:translateX(0); }
-    }
-
-    .footer {
-      margin-top: 2.5rem;
-      font-size: 0.58rem;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-align: center;
-      line-height: 2.2;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <canvas id="bg-canvas"></canvas>
-  <div class="scanlines"></div>
-  <div class="vignette"></div>
-  <div class="glitch-overlay">
-    <div class="glitch-bar"></div>
-    <div class="glitch-bar"></div>
-    <div class="glitch-bar"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<div class="glitch-overlay">
+  <div class="glitch-bar"></div>
+  <div class="glitch-bar"></div>
+  <div class="glitch-bar"></div>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">U</a>
+  <ul class="nav-links">
+    <li><a href="/" class="active">Links</a></li>
+    <li><a href="pages/about.html">About</a></li>
+    <li><a href="pages/music.html">Music</a></li>
+    <li><a href="pages/presskit.html">Press Kit</a></li>
+  </ul>
+</nav>
+
+<div class="page" style="justify-content: center;">
+
+  <div class="logo-wrap">
+    <div class="logo">U</div>
+    <p class="tagline">dark electronic &nbsp;/&nbsp; industrial metal</p>
   </div>
 
-  <div class="container">
+  <div class="divider"><span>// links</span></div>
 
-    <div class="logo-wrap">
-      <div class="logo">U</div>
-      <p class="tagline">dark electronic &nbsp;/&nbsp; industrial metal</p>
-    </div>
+  <div class="links">
 
-    <div class="divider"><span>// links</span></div>
-
-    <div class="links">
-
-      <a class="link-item" href="https://open.spotify.com/artist/0QEpRW6vokEgpDLRvx0VXF" target="_blank" rel="noopener">
-        <span class="link-gutter">01</span>
-        <span class="link-body">
+    <a class="link-item" href="https://open.spotify.com/artist/0QEpRW6vokEgpDLRvx0VXF" target="_blank" rel="noopener">
+      <span class="link-gutter">01</span>
+      <span class="link-body">
           <span class="link-cmd">stream —</span>
           <span class="link-label">Spotify</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
+      <span class="link-arrow">→</span>
+    </a>
 
-      <a class="link-item" href="https://music.apple.com/gb/artist/u/1566371089" target="_blank" rel="noopener">
-        <span class="link-gutter">02</span>
-        <span class="link-body">
+    <a class="link-item" href="https://music.apple.com/gb/artist/u/1566371089" target="_blank" rel="noopener">
+      <span class="link-gutter">02</span>
+      <span class="link-body">
           <span class="link-cmd">stream —</span>
           <span class="link-label">Apple Music</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
+      <span class="link-arrow">→</span>
+    </a>
 
-      <a class="link-item" href="https://music.youtube.com/@grande_musica_industriale" target="_blank" rel="noopener">
-        <span class="link-gutter">03</span>
-        <span class="link-body">
+    <a class="link-item" href="https://music.youtube.com/@grande_musica_industriale" target="_blank" rel="noopener">
+      <span class="link-gutter">03</span>
+      <span class="link-body">
           <span class="link-cmd">stream —</span>
           <span class="link-label">YouTube Music</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
+      <span class="link-arrow">→</span>
+    </a>
 
-      <a class="link-item" href="https://soundcloud.com/ulysses_primost" target="_blank" rel="noopener">
-        <span class="link-gutter">04</span>
-        <span class="link-body">
+    <a class="link-item" href="https://soundcloud.com/ulysses_primost" target="_blank" rel="noopener">
+      <span class="link-gutter">04</span>
+      <span class="link-body">
           <span class="link-cmd">listen —</span>
           <span class="link-label">SoundCloud</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
+      <span class="link-arrow">→</span>
+    </a>
 
-      <a class="link-item" href="https://www.instagram.com/theuband/" target="_blank" rel="noopener">
-        <span class="link-gutter">05</span>
-        <span class="link-body">
+    <a class="link-item" href="https://www.instagram.com/theuband/" target="_blank" rel="noopener">
+      <span class="link-gutter">05</span>
+      <span class="link-body">
           <span class="link-cmd">follow —</span>
           <span class="link-label">Instagram</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
+      <span class="link-arrow">→</span>
+    </a>
 
-      <a class="link-item" href="mailto:ulysse616@gmail.com">
-        <span class="link-gutter">06</span>
-        <span class="link-body">
+    <a class="link-item" href="mailto:ulysse616@gmail.com">
+      <span class="link-gutter">06</span>
+      <span class="link-body">
           <span class="link-cmd">contact —</span>
           <span class="link-label">u@umusic.space</span>
         </span>
-        <span class="link-arrow">→</span>
-      </a>
-
-    </div>
-
-    <p class="footer">
-      U &nbsp;·&nbsp; umusic.space<br>
-      all rights reserved
-    </p>
+      <span class="link-arrow">→</span>
+    </a>
 
   </div>
 
-  <script>
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
+  <p class="footer">U &nbsp;·&nbsp; umusic.space<br>all rights reserved</p>
 
-    let W, H, cols, rows, grid, nextGrid;
-    const CELL = 6;
-    const COLS_ACCENT = ['#00aaff', '#00ffcc', '#0066aa'];
+</div>
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      cols = Math.ceil(W / CELL) + 2;
-      rows = Math.ceil(H / CELL) + 2;
-      grid = new Uint8Array(cols * rows);
-      nextGrid = new Uint8Array(cols * rows);
-      for (let i = 0; i < grid.length; i++) {
-        grid[i] = Math.random() < 0.28 ? 1 : 0;
-      }
-    }
-
-    function idx(x, y) { return y * cols + x; }
-
-    function step() {
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          let n = 0;
-          for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-              if (dx === 0 && dy === 0) continue;
-              const nx = (x + dx + cols) % cols;
-              const ny = (y + dy + rows) % rows;
-              n += grid[idx(nx, ny)];
-            }
-          }
-          const alive = grid[idx(x, y)];
-          nextGrid[idx(x, y)] = (alive && (n === 2 || n === 3)) || (!alive && n === 3) ? 1 : 0;
-        }
-      }
-      if (Math.random() < 0.04) {
-        const cx = Math.floor(Math.random() * cols);
-        const cy = Math.floor(Math.random() * rows);
-        for (let dy = -3; dy <= 3; dy++) {
-          for (let dx = -3; dx <= 3; dx++) {
-            const nx = (cx + dx + cols) % cols;
-            const ny = (cy + dy + rows) % rows;
-            nextGrid[idx(nx, ny)] = Math.random() < 0.5 ? 1 : 0;
-          }
-        }
-      }
-      const tmp = grid; grid = nextGrid; nextGrid = tmp;
-    }
-
-    let glitchTimer = 0;
-    let glitchActive = false;
-    let glitchX = 0, glitchY = 0, glitchH = 0, glitchShift = 0;
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          if (!grid[idx(x, y)]) continue;
-          const px = x * CELL;
-          const py = y * CELL;
-          const r = Math.random();
-          if (r < 0.05) {
-            ctx.fillStyle = '#00ffcc22';
-          } else if (r < 0.15) {
-            ctx.fillStyle = '#00aaff18';
-          } else {
-            ctx.fillStyle = '#00aaff0a';
-          }
-          ctx.fillRect(px, py, CELL - 1, CELL - 1);
-        }
-      }
-
-      glitchTimer--;
-      if (glitchTimer <= 0) {
-        glitchTimer = 30 + Math.floor(Math.random() * 120);
-        glitchActive = Math.random() < 0.55;
-        glitchY = Math.floor(Math.random() * H);
-        glitchH = 2 + Math.floor(Math.random() * 18);
-        glitchShift = (Math.random() < 0.5 ? -1 : 1) * (4 + Math.floor(Math.random() * 40));
-      }
-
-      if (glitchActive) {
-        const slice = ctx.getImageData(0, glitchY, W, glitchH);
-        ctx.putImageData(slice, glitchShift, glitchY);
-        ctx.fillStyle = 'rgba(0,170,255,0.06)';
-        ctx.fillRect(0, glitchY, W, glitchH);
-      }
-
-      for (let i = 0; i < 6; i++) {
-        ctx.fillStyle = Math.random() < 0.5 ? 'rgba(0,170,255,0.6)' : 'rgba(0,255,204,0.5)';
-        ctx.fillRect(
-          Math.floor(Math.random() * W),
-          Math.floor(Math.random() * H),
-          1, 1
-        );
-      }
-
-      if (Math.random() < 0.04) {
-        const lx = Math.floor(Math.random() * W);
-        ctx.strokeStyle = 'rgba(0,170,255,0.12)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(lx, 0);
-        ctx.lineTo(lx, H);
-        ctx.stroke();
-      }
-    }
-
-    let frame = 0;
-    function loop() {
-      frame++;
-      if (frame % 3 === 0) step();
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-    loop();
-  </script>
-
+<script src="js/main.js"></script>
 </body>
 </html>
