@@ -18,6 +18,111 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+
+    <style>
+        /* ── MUSIC PAGE SPECIFIC ── */
+        .music-section {
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .music-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Spotify tracks grid */
+        .tracks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .track-wrap {
+            position: relative;
+            border: 1px solid var(--border);
+            background: rgba(8,12,16,0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            overflow: hidden;
+            transition: border-color 0.2s;
+            animation: slidein 0.5s ease both;
+        }
+
+        .track-wrap:hover {
+            border-color: var(--accent);
+        }
+
+        .track-wrap:nth-child(1) { animation-delay: 0.1s; }
+        .track-wrap:nth-child(2) { animation-delay: 0.2s; }
+        .track-wrap:nth-child(3) { animation-delay: 0.3s; }
+        .track-wrap:nth-child(4) { animation-delay: 0.4s; }
+        .track-wrap:nth-child(5) { animation-delay: 0.5s; }
+
+        .track-wrap iframe {
+            display: block;
+            width: 100%;
+            border: none;
+            border-radius: 0;
+        }
+
+        /* track label above each embed */
+        .track-index {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .track-index span:first-child {
+            font-size: 0.58rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            min-width: 24px;
+        }
+
+        .track-index span:last-child {
+            font-size: 0.58rem;
+            color: var(--accent);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* SoundCloud section */
+        .sc-wrap {
+            border: 1px solid var(--border);
+            background: rgba(8,12,16,0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            overflow: hidden;
+            transition: border-color 0.2s;
+            animation: fadein 0.8s ease both;
+            animation-delay: 0.3s;
+        }
+
+        .sc-wrap:hover {
+            border-color: var(--accent);
+        }
+
+        .sc-note {
+            padding: 12px 16px;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        .sc-note span {
+            color: var(--accent);
+        }
+
+        .sc-wrap iframe {
+            display: block;
+            width: 100%;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -46,11 +151,99 @@
         <p class="page-subtitle">// signal received</p>
         <h1 class="page-title">Music</h1>
 
-        <div class="divider"><span>// releases</span></div>
+        <!-- SPOTIFY TRACKS -->
+        <div class="divider"><span>// releases — spotify</span></div>
 
-        <div class="placeholder-card">
-            [ releases · embedded players coming soon ]<br>
-            spotify · apple music · soundcloud embeds
+        <div class="music-section">
+            <div class="tracks-grid">
+
+                <!-- Track 1 -->
+                <div class="track-wrap">
+                    <div class="track-index">
+                        <span>01</span>
+                        <span>stream — spotify</span>
+                    </div>
+                    <iframe
+                            src="https://open.spotify.com/embed/track/3ZdeHAuiNEZSSQSc6qBIcq?utm_source=generator&theme=0"
+                            height="152"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Track 2 -->
+                <div class="track-wrap">
+                    <div class="track-index">
+                        <span>02</span>
+                        <span>stream — spotify</span>
+                    </div>
+                    <iframe
+                            src="https://open.spotify.com/embed/track/3frd9P6hM878Zu3Sb17wIs?utm_source=generator&theme=0"
+                            height="152"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Track 3 -->
+                <div class="track-wrap">
+                    <div class="track-index">
+                        <span>03</span>
+                        <span>stream — spotify</span>
+                    </div>
+                    <iframe
+                            src="https://open.spotify.com/embed/track/3AMqlLPZUp5cbsa6aX5AUq?utm_source=generator&theme=0"
+                            height="152"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Track 4 -->
+                <div class="track-wrap">
+                    <div class="track-index">
+                        <span>04</span>
+                        <span>stream — spotify</span>
+                    </div>
+                    <iframe
+                            src="https://open.spotify.com/embed/track/3ZU3K0lTqUgzwzechpJz6q?utm_source=generator&theme=0"
+                            height="152"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Track 5 -->
+                <div class="track-wrap">
+                    <div class="track-index">
+                        <span>05</span>
+                        <span>stream — spotify</span>
+                    </div>
+                    <iframe
+                            src="https://open.spotify.com/embed/track/1seXMnpBRlDUKpuiFFStZr?utm_source=generator&theme=0"
+                            height="152"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                    </iframe>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SOUNDCLOUD -->
+        <div class="divider"><span>// demos — soundcloud</span></div>
+
+        <div class="music-section">
+            <div class="sc-wrap">
+                <div class="sc-note">
+                    early works &amp; demos available on <span>soundcloud</span>
+                </div>
+                <iframe
+                        src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/ulysses_primost&color=%2300aaff&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+                        height="300"
+                        allow="autoplay">
+                </iframe>
+            </div>
         </div>
 
     </div>
